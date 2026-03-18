@@ -44,7 +44,7 @@ class GlobListMatcher
             && (!is_null($globExpressionList))
         ) {
             $message = "Given value \"$globExpressionList\" is not a valid glob expression list. " .
-                "Valid entry must be a list of glob expressions e.g. [\"*.txt\", \"*.pdf\"].";
+                'Valid entry must be a list of glob expressions e.g. ["*.txt", "*.pdf"].';
 
             throw new \InvalidArgumentException($message);
         }

@@ -79,12 +79,11 @@ class ModulePackageInstaller extends AbstractPackageInstaller
             ->get('oxid_esales.module.install.service.bootstrap_module_installer');
     }
 
-
     /**
      * returns module's installation target direcory
      */
     protected function getModuleTargetDir(): string
     {
-        return $this->getPackage()->getExtra()["oxideshop"]["target-directory"] ?? "";
+        return $this->getPackage()->getExtra()['oxideshop']['target-directory'] ?? '';
     }
 }

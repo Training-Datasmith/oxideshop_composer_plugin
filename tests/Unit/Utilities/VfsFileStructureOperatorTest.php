@@ -34,7 +34,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     public function testThrowAnExceptionIfInputIsNotAnArray()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Given input argument must be an array.");
+        $this->expectExceptionMessage('Given input argument must be an array.');
         VfsFileStructureOperator::nest(1);
     }
 
@@ -54,7 +54,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     public function testReturnArrayAsIsWhenOnlyOneFileIsPresent()
     {
         $input = [
-            'file' => 'Contents'
+            'file' => 'Contents',
         ];
 
         $this->assertSame($input, VfsFileStructureOperator::nest($input));
@@ -63,11 +63,11 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     public function testReturnArrayAsIsWhenOnlyOneFileIsPresentIgnoringSpacesAtBeginningAndEnd()
     {
         $input = [
-            '  file ' => 'Contents'
+            '  file ' => 'Contents',
         ];
 
         $expectedOutput = [
-            'file' => 'Contents'
+            'file' => 'Contents',
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -77,7 +77,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     {
         $input = [
             'file'        => 'Contents',
-            'second_file' => 'Second Contents'
+            'second_file' => 'Second Contents',
         ];
 
         $this->assertSame($input, VfsFileStructureOperator::nest($input));
@@ -87,7 +87,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     {
         $input = [
             'file'     => 'Contents',
-            '  file  ' => 'Second Contents'
+            '  file  ' => 'Second Contents',
         ];
 
         $expectedOutput = [
@@ -100,13 +100,13 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     public function testReturnNestedArrayWhenSingleItemContainsMultiLevelPath()
     {
         $input = [
-            'directory/file' => 'contents'
+            'directory/file' => 'contents',
         ];
 
         $expectedOutput = [
             'directory' => [
-                'file' => 'contents'
-            ]
+                'file' => 'contents',
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -122,9 +122,9 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
         $expectedOutput = [
             'directory' => [
                 'fake_file' => [
-                    'real_file' => 'real contents'
-                ]
-            ]
+                    'real_file' => 'real contents',
+                ],
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -133,13 +133,13 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     public function testReturnNestedArrayWhenSingleItemContainsMultiLevelPathWithTrailingSlash()
     {
         $input = [
-            'directory/sub/' => 'contents'
+            'directory/sub/' => 'contents',
         ];
 
         $expectedOutput = [
             'directory' => [
-                'sub' => []
-            ]
+                'sub' => [],
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -156,7 +156,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
             'directory' => [
                 'file'        => 'contents',
                 'second_file' => 'second contents',
-            ]
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -177,7 +177,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
             ],
             'directory_a' => [
                 'file' => 'a contents',
-            ]
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -186,15 +186,15 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
     public function testReturnNestedArrayWhenSingleItemContainsMultiLevelPathMoreThenOneLevelDeep()
     {
         $input = [
-            'directory/another_directory/file' => 'contents'
+            'directory/another_directory/file' => 'contents',
         ];
 
         $expectedOutput = [
             'directory' => [
                 'another_directory' => [
-                    'file' => 'contents'
-                ]
-            ]
+                    'file' => 'contents',
+                ],
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -213,7 +213,7 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
             ],
             'second_directory' => [
                 'second_file' => 'second contents',
-            ]
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));
@@ -242,13 +242,13 @@ class VfsFileStructureOperatorTest extends \PHPUnit\Framework\TestCase
                 'directory_b' => [
                     'directory_c' => [
                         'file' => 'third contents',
-                    ]
-                ]
+                    ],
+                ],
             ],
             'file_c'      => 'c override contents',
             'fake_file'   => [
                 'real_file' => 'real contents',
-            ]
+            ],
         ];
 
         $this->assertSame($expectedOutput, VfsFileStructureOperator::nest($input));

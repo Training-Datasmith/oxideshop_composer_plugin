@@ -50,7 +50,7 @@ class PackageUpdatePreferenceCheckerTest extends TestCase
                     uniqid(),
                     $packageName,
                     uniqid(),
-                ]
+                ],
             ],
             'packageName' => $packageName,
             'expectedValue' => false,
@@ -62,7 +62,7 @@ class PackageUpdatePreferenceCheckerTest extends TestCase
                     uniqid(),
                     $packageName,
                     uniqid(),
-                ]
+                ],
             ],
             'packageName' => $packageName,
             'expectedValue' => true,
@@ -79,7 +79,7 @@ class PackageUpdatePreferenceCheckerTest extends TestCase
                     uniqid(),
                     $packageName,
                     uniqid(),
-                ]
+                ],
             ],
             'packageName' => $packageName,
             'expectedValue' => true,
@@ -103,13 +103,13 @@ class PackageUpdatePreferenceCheckerTest extends TestCase
         yield 'missconfigured preference no value as not array' => [
             'extras' => [
                 PackageUpdatePreferenceChecker::UPDATE_EXTRA_KEY_NO => uniqid(),
-            ]
+            ],
         ];
 
         yield 'missconfigured preference yes value as not array' => [
             'extras' => [
                 PackageUpdatePreferenceChecker::UPDATE_EXTRA_KEY_YES => uniqid(),
-            ]
+            ],
         ];
     }
 }

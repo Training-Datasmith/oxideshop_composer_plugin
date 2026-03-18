@@ -21,7 +21,7 @@ class ShopPackageInstallerTest extends AbstractShopPackageInstaller
     public function testShopIsInstalledIfSourceFilesAlreadyExist(): void
     {
         $this->setupVirtualProjectRoot('source/', [
-            'index.php' => '<?php'
+            'index.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller();

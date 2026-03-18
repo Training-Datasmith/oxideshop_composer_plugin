@@ -38,7 +38,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
     public function testThemeIsInstalledIfAlreadyExistsInShop(): void
     {
         $this->setupVirtualProjectRoot('source/Application/views/test-package', [
-            'theme.php' => '<?php'
+            'theme.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller('test-vendor/test-package');
@@ -50,7 +50,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
     public function testThemeIsInstalledAfterInstallProcess(): void
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
-            'theme.php' => '<?php'
+            'theme.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller('test-vendor/test-package');
@@ -64,7 +64,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
     public function testThemeFilesAreCopiedAfterInstallProcess(): void
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
-            'theme.php' => '<?php'
+            'theme.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller('test-vendor/test-package');
@@ -79,13 +79,13 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
     public function testThemeFilesAreCopiedAfterInstallProcessWithSameTargetDirectory(): void
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
-            'theme.php' => '<?php'
+            'theme.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'target-directory' => 'test-package',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -98,13 +98,13 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
     public function testThemeFilesAreCopiedAfterInstallProcessWithCustomTargetDirectory(): void
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
-            'theme.php' => '<?php'
+            'theme.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'target-directory' => 'custom-package',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -140,7 +140,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'assets-directory' => 'out',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -160,7 +160,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'target-directory' => 'test-package',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -181,7 +181,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
             'oxideshop' => [
                 'assets-directory' => 'out',
                 'target-directory' => 'test-package',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -201,7 +201,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'assets-directory' => 'custom_assets',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -221,7 +221,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'target-directory' => 'custom-package',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -242,7 +242,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
             'oxideshop' => [
                 'assets-directory' => 'custom_assets',
                 'target-directory' => 'custom-package',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -261,7 +261,7 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'assets-directory' => 'custom_assets',
-            ]
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -297,8 +297,8 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
 
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
-                'blacklist-filter' => []
-            ]
+                'blacklist-filter' => [],
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -320,9 +320,9 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
         $installer = $this->getPackageInstaller('test-vendor/test-package', '1.0.0', [
             'oxideshop' => [
                 'blacklist-filter' => [
-                    '**/*.doc'
-                ]
-            ]
+                    '**/*.doc',
+                ],
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -346,8 +346,8 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
                 'blacklist-filter' => [
                     '**/*.txt',
                     '**/*.pdf',
-                ]
-            ]
+                ],
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -395,8 +395,8 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
                 'blacklist-filter' => [
                     '**/*.txt',
                     '**/*.pdf',
-                ]
-            ]
+                ],
+            ],
         ]);
         $installer->install($this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package'));
 
@@ -428,8 +428,8 @@ class ThemePackageInstallerTest extends AbstractPackageInstaller
                 'blacklist-filter' => [
                     '**/*.txt',
                     '**/*.pdf',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $packagePath = $this->getVirtualFileSystemRootPath('vendor/test-vendor/test-package');

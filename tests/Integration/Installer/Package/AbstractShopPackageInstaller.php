@@ -24,10 +24,10 @@ abstract class AbstractShopPackageInstaller extends AbstractPackageInstaller
         );
 
         $extra['oxideshop']['blacklist-filter'] = [
-            "Application/Component/**/*",
-            "Application/Controller/**/*",
-            "Application/Model/**/*",
-            "Core/**/*"
+            'Application/Component/**/*',
+            'Application/Controller/**/*',
+            'Application/Model/**/*',
+            'Core/**/*',
         ];
         $package->setExtra($extra);
 

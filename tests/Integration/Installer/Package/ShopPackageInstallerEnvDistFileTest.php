@@ -15,7 +15,7 @@ class ShopPackageInstallerEnvDistFileTest extends AbstractShopPackageInstaller
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
             '.env.dist' => 'PACKAGE CONTENT',
-            'source/index.php' => '<?php'
+            'source/index.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller();
@@ -29,11 +29,11 @@ class ShopPackageInstallerEnvDistFileTest extends AbstractShopPackageInstaller
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
             '.env.dist' => 'NEW CONTENT',
-            'source/index.php' => '<?php'
+            'source/index.php' => '<?php',
         ]);
 
         $this->setupVirtualProjectRoot('', [
-            '.env.dist' => 'EXISTING CONTENT'
+            '.env.dist' => 'EXISTING CONTENT',
         ]);
 
         $installer = $this->getPackageInstaller();
@@ -45,7 +45,7 @@ class ShopPackageInstallerEnvDistFileTest extends AbstractShopPackageInstaller
     public function testShopInstallProcessDoesNotCreateEnvDistFileIfItDoesNotExistInPackage(): void
     {
         $this->setupVirtualProjectRoot('vendor/test-vendor/test-package', [
-            'source/index.php' => '<?php'
+            'source/index.php' => '<?php',
         ]);
 
         $installer = $this->getPackageInstaller();

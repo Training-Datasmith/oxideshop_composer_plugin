@@ -19,7 +19,7 @@ use Symfony\Component\Filesystem\Path;
 class ThemePackageInstaller extends AbstractPackageInstaller
 {
     public const METADATA_FILE_NAME = 'theme.php';
-    public const PATH_TO_THEMES = "Application/views";
+    public const PATH_TO_THEMES = 'Application/views';
 
     public function isInstalled(string $packagePath): bool
     {

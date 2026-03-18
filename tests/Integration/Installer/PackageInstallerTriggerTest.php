@@ -27,7 +27,7 @@ class PackageInstallerTriggerTest extends TestCase
 
         $packageInstallerStub = new PackageInstallerTrigger(new NullIO(), $composerMock);
         $packageInstallerStub->setSettings([
-            'source-path' => 'some/path/to/source'
+            'source-path' => 'some/path/to/source',
         ]);
         $this->assertEquals($packageInstallerStub->getShopSourcePath(), 'some/path/to/source');
     }

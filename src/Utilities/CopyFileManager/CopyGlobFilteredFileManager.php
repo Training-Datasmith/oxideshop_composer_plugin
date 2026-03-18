@@ -35,14 +35,14 @@ class CopyGlobFilteredFileManager
     {
         if (!is_string($sourcePath)) {
             $message = "Given value \"$sourcePath\" is not a valid source path entry. " .
-                "Valid entry must be an absolute path to an existing file or directory.";
+                'Valid entry must be an absolute path to an existing file or directory.';
 
             throw new \InvalidArgumentException($message);
         }
 
         if (!is_string($destinationPath)) {
             $message = "Given value \"$destinationPath\" is not a valid destination path entry. " .
-                "Valid entry must be an absolute path to an existing directory.";
+                'Valid entry must be an absolute path to an existing directory.';
 
             throw new \InvalidArgumentException($message);
         }
@@ -122,7 +122,7 @@ class CopyGlobFilteredFileManager
             $globExpressionList
         );
 
-        $filesystem->mirror($sourcePath, $destinationPath, $filteredFileListIterator, ["override" => true]);
+        $filesystem->mirror($sourcePath, $destinationPath, $filteredFileListIterator, ['override' => true]);
     }
 
     /**

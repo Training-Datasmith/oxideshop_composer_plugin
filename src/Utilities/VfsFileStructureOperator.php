@@ -22,7 +22,7 @@ class VfsFileStructureOperator
     public static function nest($flatFileSystemStructure = null): array
     {
         if (null !== $flatFileSystemStructure && false === is_array($flatFileSystemStructure)) {
-            throw new \InvalidArgumentException("Given input argument must be an array.");
+            throw new \InvalidArgumentException('Given input argument must be an array.');
         }
 
         if (null === $flatFileSystemStructure) {

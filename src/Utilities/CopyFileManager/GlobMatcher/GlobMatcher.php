@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher;
 
-use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\Integration\WebmozartGlobMatcher;
 use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\GlobListMatcher\GlobListMatcher;
+use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\Integration\WebmozartGlobMatcher;
 
 /**
  * Expose multiple glob matching interface for given relative path.

@@ -10,10 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\ComposerPlugin\Installer\Package;
 
 use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\CopyGlobFilteredFileManager;
-use Webmozart\Glob\Iterator\GlobIterator;
-use Symfony\Component\Filesystem\Path;
 
 use function sprintf;
+
+use Symfony\Component\Filesystem\Path;
+
+use Webmozart\Glob\Iterator\GlobIterator;
 
 /**
  * @inheritdoc

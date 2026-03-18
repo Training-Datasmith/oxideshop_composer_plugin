@@ -16,13 +16,13 @@ class ComponentInstaller extends AbstractPackageInstaller
 {
     public function install($packagePath): void
     {
-        $this->writeInstallingMessage("component");
+        $this->writeInstallingMessage('component');
         $this->importServiceFile($packagePath);
     }
 
     public function update($packagePath): void
     {
-        $this->writeUpdatingMessage("component");
+        $this->writeUpdatingMessage('component');
         $this->importServiceFile($packagePath);
     }
 

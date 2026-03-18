@@ -34,7 +34,7 @@ abstract class AbstractGlobMatcher
     {
         if (!is_string($globExpression) && !is_null($globExpression)) {
             $message = "Given value \"$globExpression\" is not a valid glob expression. " .
-                "Valid expression must be a string e.g. \"*.txt\".";
+                'Valid expression must be a string e.g. "*.txt".';
 
             throw new InvalidArgumentException($message);
         }
