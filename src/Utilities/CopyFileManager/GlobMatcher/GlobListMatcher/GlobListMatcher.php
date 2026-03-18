@@ -18,17 +18,13 @@ use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\Integration\
  */
 class GlobListMatcher
 {
-    /** @var AbstractGlobMatcher */
-    protected $globMatcher;
-
     /**
      * GlobListMatcher constructor.
      *
      * @param AbstractGlobMatcher $globMatcher Instance of a variant from AbstractGlobMatcher.
      */
-    public function __construct($globMatcher)
+    public function __construct(protected $globMatcher)
     {
-        $this->globMatcher = $globMatcher;
     }
 
     /**
@@ -65,10 +61,8 @@ class GlobListMatcher
      *
      * @param string $relativePath
      * @param array  $globExpressionList List of glob expressions, e.g. ["*.txt", "*.pdf"].
-     *
-     * @return bool
      */
-    private function isMatchInList($relativePath, $globExpressionList)
+    private function isMatchInList($relativePath, array $globExpressionList): bool
     {
         foreach ($globExpressionList as $globExpression) {
             if ($this->globMatcher->match($relativePath, $globExpression)) {

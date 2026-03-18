@@ -20,8 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 class ModulePackageInstaller extends AbstractPackageInstaller
 {
     /**
-     * @param string $packagePath
-     *
      * @return bool
      */
     public function isInstalled(string $packagePath)
@@ -40,9 +38,6 @@ class ModulePackageInstaller extends AbstractPackageInstaller
         $this->getBootstrapModuleInstaller()->install($this->getOxidShopPackage($packagePath));
     }
 
-    /**
-     * @param string $packagePath
-     */
     public function uninstall(string $packagePath): void
     {
         $moduleInstaller = $this->getModuleInstaller();
@@ -52,7 +47,7 @@ class ModulePackageInstaller extends AbstractPackageInstaller
     /**
      * @param string $packagePath
      */
-    public function update($packagePath)
+    public function update($packagePath): void
     {
         $package = $this->getOxidShopPackage($packagePath);
 
@@ -64,9 +59,6 @@ class ModulePackageInstaller extends AbstractPackageInstaller
         }
     }
 
-    /**
-     * @return ModuleInstallerInterface
-     */
     private function getModuleInstaller(): ModuleInstallerInterface
     {
         try {
@@ -76,11 +68,6 @@ class ModulePackageInstaller extends AbstractPackageInstaller
         }
     }
 
-    /**
-     * @param string $packagePath
-     *
-     * @return OxidEshopPackage
-     */
     private function getOxidShopPackage(string $packagePath): OxidEshopPackage
     {
         return new OxidEshopPackage($packagePath);

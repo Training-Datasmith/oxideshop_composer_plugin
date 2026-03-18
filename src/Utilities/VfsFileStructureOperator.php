@@ -18,10 +18,8 @@ class VfsFileStructureOperator
      * Convert given flat file system structure into nested one.
      *
      * @param array|null $flatFileSystemStructure
-     *
-     * @return array
      */
-    public static function nest($flatFileSystemStructure = null)
+    public static function nest($flatFileSystemStructure = null): array
     {
         if (null !== $flatFileSystemStructure && false === is_array($flatFileSystemStructure)) {
             throw new \InvalidArgumentException("Given input argument must be an array.");
@@ -34,7 +32,7 @@ class VfsFileStructureOperator
         $nestedFileSystemStructure = [];
 
         foreach ($flatFileSystemStructure as $pathEntry => $contents) {
-            $pathEntries = explode(DIRECTORY_SEPARATOR, $pathEntry);
+            $pathEntries = explode(DIRECTORY_SEPARATOR, (string) $pathEntry);
 
             $pointerToBranch = &$nestedFileSystemStructure;
             foreach ($pathEntries as $singlePathEntry) {
@@ -53,7 +51,7 @@ class VfsFileStructureOperator
                 }
             }
 
-            if (substr($pathEntry, -1) !== DIRECTORY_SEPARATOR) {
+            if (substr((string) $pathEntry, -1) !== DIRECTORY_SEPARATOR) {
                 $pointerToBranch = $contents;
             }
         }

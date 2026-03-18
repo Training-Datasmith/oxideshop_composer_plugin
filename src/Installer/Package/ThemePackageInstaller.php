@@ -21,12 +21,7 @@ class ThemePackageInstaller extends AbstractPackageInstaller
     public const METADATA_FILE_NAME = 'theme.php';
     public const PATH_TO_THEMES = "Application/views";
 
-    /**
-     * @param string $packagePath
-     *
-     * @return bool
-     */
-    public function isInstalled(string $packagePath)
+    public function isInstalled(string $packagePath): bool
     {
         return file_exists($this->formThemeTargetPath() . '/' . static::METADATA_FILE_NAME);
     }
@@ -36,7 +31,7 @@ class ThemePackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath
      */
-    public function install($packagePath)
+    public function install($packagePath): void
     {
         $this->writeInstallingMessage($this->getPackageTypeDescription());
         $this->writeCopyingMessage();
@@ -49,7 +44,7 @@ class ThemePackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath
      */
-    public function update($packagePath)
+    public function update($packagePath): void
     {
         $this->writeUpdatingMessage($this->getPackageTypeDescription());
         $themeDirectoryName = $this->formThemeDirectoryName($this->getPackage());
@@ -80,9 +75,6 @@ class ThemePackageInstaller extends AbstractPackageInstaller
         }
     }
 
-    /**
-     * @param string $packagePath
-     */
     public function uninstall(string $packagePath): void
     {
         //not implemented yet
@@ -108,20 +100,14 @@ class ThemePackageInstaller extends AbstractPackageInstaller
         $this->installAssets($packagePath);
     }
 
-    /**
-     * @return string
-     */
-    protected function formThemeTargetPath()
+    protected function formThemeTargetPath(): string
     {
         $package = $this->getPackage();
         $themeDirectoryName = $this->formThemeDirectoryName($package);
         return "{$this->getRootDirectory()}/" . static::PATH_TO_THEMES . "/$themeDirectoryName";
     }
 
-    /**
-     * @param string $packagePath
-     */
-    protected function installAssets($packagePath)
+    protected function installAssets(string $packagePath)
     {
         $package = $this->getPackage();
         $target = $this->getRootDirectory() . '/out/' . $this->formThemeDirectoryName($package);
@@ -146,7 +132,7 @@ class ThemePackageInstaller extends AbstractPackageInstaller
     {
         $themePath = $this->getExtraParameterValueByKey(static::EXTRA_PARAMETER_KEY_TARGET);
         if (is_null($themePath)) {
-            $themePath = explode('/', $package->getName())[1];
+            return explode('/', (string) $package->getName())[1];
         }
         return $themePath;
     }
@@ -158,14 +144,11 @@ class ThemePackageInstaller extends AbstractPackageInstaller
     {
         $assetsDirectory = $this->getExtraParameterValueByKey(static::EXTRA_PARAMETER_KEY_ASSETS);
         if (is_null($assetsDirectory)) {
-            $assetsDirectory = 'out';
+            return 'out';
         }
         return $assetsDirectory;
     }
 
-    /**
-     * @return string
-     */
     protected function getPackageTypeDescription(): string
     {
         return 'theme package';

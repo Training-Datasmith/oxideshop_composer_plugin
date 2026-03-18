@@ -30,7 +30,7 @@ class PackageInstallerTrigger extends LibraryInstaller
     public const TYPE_COMPONENT = 'oxideshop-component';
 
     /** @var array Available installers for packages. */
-    private $installers = [
+    private array $installers = [
         self::TYPE_ESHOP => ShopPackageInstaller::class,
         self::TYPE_MODULE => ModulePackageInstaller::class,
         self::TYPE_THEME => ThemePackageInstaller::class,
@@ -56,15 +56,12 @@ class PackageInstallerTrigger extends LibraryInstaller
     /**
      * @param array $settings Set additional settings.
      */
-    public function setSettings($settings)
+    public function setSettings($settings): void
     {
         $this->settings = $settings;
     }
 
-    /**
-     * @param PackageInterface $package
-     */
-    public function installPackage(PackageInterface $package)
+    public function installPackage(PackageInterface $package): void
     {
         $installer = $this->createInstaller($package);
 
@@ -74,18 +71,12 @@ class PackageInstallerTrigger extends LibraryInstaller
         }
     }
 
-    /**
-     * @param PackageInterface $package
-     */
-    public function updatePackage(PackageInterface $package)
+    public function updatePackage(PackageInterface $package): void
     {
         $installer = $this->createInstaller($package);
         $installer->update($this->getInstallPath($package));
     }
 
-    /**
-     * @param PackageInterface $package
-     */
     public function uninstallPackage(PackageInterface $package): void
     {
         $installer = $this->createInstaller($package);
@@ -99,19 +90,12 @@ class PackageInstallerTrigger extends LibraryInstaller
      */
     public function getShopSourcePath()
     {
-        $shopSource = Path::join(getcwd(), ShopPackageInstaller::SHOP_SOURCE_DIRECTORY);
-
-        if (isset($this->settings[AbstractPackageInstaller::EXTRA_PARAMETER_SOURCE_PATH])) {
-            $shopSource = $this->settings[AbstractPackageInstaller::EXTRA_PARAMETER_SOURCE_PATH];
-        }
-
-        return $shopSource;
+        return $this->settings[AbstractPackageInstaller::EXTRA_PARAMETER_SOURCE_PATH] ?? Path::join(getcwd(), ShopPackageInstaller::SHOP_SOURCE_DIRECTORY);
     }
 
     /**
      * Creates package installer.
      *
-     * @param PackageInterface $package
      * @return AbstractPackageInstaller
      */
     protected function createInstaller(PackageInterface $package)

@@ -26,18 +26,14 @@ use Symfony\Component\Filesystem\Path;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
-    /** @var Composer */
-    private $composer;
+    private ?\Composer\Composer $composer = null;
 
-    /** @var PackageInstallerTrigger */
-    private $packageInstallerTrigger;
+    private ?\OxidEsales\ComposerPlugin\Installer\PackageInstallerTrigger $packageInstallerTrigger = null;
 
     /**
      * Register events.
-     *
-     * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'post-install-cmd'      => 'installPackages',
@@ -48,11 +44,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     /**
      * Register shop packages installer.
-     *
-     * @param Composer    $composer
-     * @param IOInterface $io
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $packageInstallerTrigger = new PackageInstallerTrigger($io, $composer);
         $composer->getInstallationManager()->addInstaller($packageInstallerTrigger);
@@ -108,9 +101,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    /**
-     * @param PackageEvent $event
-     */
     public function uninstallPackage(PackageEvent $event): void
     {
         $this->autoloadInstalledPackages();

@@ -14,21 +14,18 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYaml
 
 class ComponentInstaller extends AbstractPackageInstaller
 {
-    public function install($packagePath)
+    public function install($packagePath): void
     {
         $this->writeInstallingMessage("component");
         $this->importServiceFile($packagePath);
     }
 
-    public function update($packagePath)
+    public function update($packagePath): void
     {
         $this->writeUpdatingMessage("component");
         $this->importServiceFile($packagePath);
     }
 
-    /**
-     * @param string $packagePath
-     */
     public function uninstall(string $packagePath): void
     {
         //not implemented yet

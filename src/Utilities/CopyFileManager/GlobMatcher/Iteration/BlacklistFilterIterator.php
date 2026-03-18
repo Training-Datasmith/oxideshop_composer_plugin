@@ -18,12 +18,6 @@ use Symfony\Component\Filesystem\Path;
  */
 class BlacklistFilterIterator extends \FilterIterator
 {
-    /** @var array List of glob expressions, e.g. ["*.txt", "*.pdf"]. */
-    private $globExpressionList;
-
-    /** @var string Absolute root path from the start of iteration. */
-    private $rootPath;
-
     /**
      * BlacklistFilterIterator constructor.
      *
@@ -31,18 +25,13 @@ class BlacklistFilterIterator extends \FilterIterator
      * @param string    $rootPath           Absolute root path from the start of iteration.
      * @param array     $globExpressionList List of glob expressions, e.g. ["*.txt", "*.pdf"].
      */
-    public function __construct(\Iterator $iterator, $rootPath, $globExpressionList)
+    public function __construct(\Iterator $iterator, private $rootPath, private $globExpressionList)
     {
         parent::__construct($iterator);
-
-        $this->globExpressionList = $globExpressionList;
-        $this->rootPath = $rootPath;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return bool
      */
     public function accept(): bool
     {
@@ -55,10 +44,8 @@ class BlacklistFilterIterator extends \FilterIterator
      * Get relative path from given item of iteration compared to provided root path.
      *
      * @param string $absolutePath Absolute path from iteration.
-     *
-     * @return string
      */
-    private function getRelativePath($absolutePath)
+    private function getRelativePath(string $absolutePath): string
     {
         return Path::makeRelative($absolutePath, $this->rootPath);
     }
@@ -67,10 +54,8 @@ class BlacklistFilterIterator extends \FilterIterator
      * Returns string to absolute path from an entry of SplFileInfo.
      *
      * @param \SplFileInfo $item Item from iteration.
-     *
-     * @return string
      */
-    private function convertFromSplFileInfoToString(\SplFileInfo $item)
+    private function convertFromSplFileInfoToString(\SplFileInfo $item): string
     {
         return (string)$item;
     }

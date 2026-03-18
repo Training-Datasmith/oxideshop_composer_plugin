@@ -28,10 +28,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
     private const HTACCESS_FILTER = '**/.htaccess';
     private const ROBOTS_EXCLUSION_FILTER = '**/robots.txt';
 
-    /**
-     * @return bool
-     */
-    public function isInstalled(string $packagePath)
+    public function isInstalled(string $packagePath): bool
     {
         return file_exists(
             Path::join($this->getTargetDirectoryOfShopSource(), self::FILE_TO_CHECK_IF_PACKAGE_INSTALLED)
@@ -43,7 +40,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath
      */
-    public function install($packagePath)
+    public function install($packagePath): void
     {
         $this->writeInstallingMessage($this->getPackageTypeDescription());
         $this->writeCopyingMessage();
@@ -56,7 +53,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath
      */
-    public function update($packagePath)
+    public function update($packagePath): void
     {
         $shopSourceDirectory = str_replace(
             'source',
@@ -81,9 +78,6 @@ class ShopPackageInstaller extends AbstractPackageInstaller
         }
     }
 
-    /**
-     * @param string $packagePath
-     */
     public function uninstall(string $packagePath): void
     {
         //not implemented yet
@@ -92,7 +86,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
     /**
      * @param string $packagePath
      */
-    private function copyPackage($packagePath)
+    private function copyPackage($packagePath): void
     {
         $this->copyShopSourceFromPackageToTarget($packagePath);
         $this->copyHtaccessFiles($packagePath);
@@ -107,7 +101,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath
      */
-    private function copyShopSourceFromPackageToTarget($packagePath)
+    private function copyShopSourceFromPackageToTarget($packagePath): void
     {
         $filtersToApply = [
             $this->getBlacklistFilterValue(),
@@ -130,7 +124,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath Absolute path which points to shop's package directory.
      */
-    private function copyHtaccessFiles($packagePath)
+    private function copyHtaccessFiles($packagePath): void
     {
         $this->copyFilesFromSourceToInstallationByFilter(
             $packagePath,
@@ -143,7 +137,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath Absolute path which points to shop's package directory.
      */
-    private function copyFaviconFile($packagePath)
+    private function copyFaviconFile($packagePath): void
     {
         $this->copyFilesFromSourceToInstallationByFilter(
             $packagePath,
@@ -156,7 +150,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath Absolute path which points to shop's package directory.
      */
-    private function copyOfflineFile($packagePath)
+    private function copyOfflineFile($packagePath): void
     {
         $this->copyFilesFromSourceToInstallationByFilter(
             $packagePath,
@@ -164,7 +158,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
         );
     }
 
-    private function copyEnvDistFile($packagePath)
+    private function copyEnvDistFile(string $packagePath): void
     {
         $sourceFilePath = Path::join($packagePath, self::ENV_DIST_FILE);
         $projectRootPath = dirname($this->getRootDirectory());
@@ -178,7 +172,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      *
      * @param string $packagePath Absolute path which points to shop's package directory.
      */
-    private function copyRobotsExclusionFiles($packagePath)
+    private function copyRobotsExclusionFiles($packagePath): void
     {
         $this->copyFilesFromSourceToInstallationByFilter(
             $packagePath,
@@ -190,10 +184,8 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      * Return package directory which points to shop's source directory.
      *
      * @param string $packagePath Absolute path which points to shop's package directory.
-     *
-     * @return string
      */
-    private function getPackageDirectoryOfShopSource($packagePath)
+    private function getPackageDirectoryOfShopSource(string $packagePath): string
     {
         return Path::join($packagePath, self::SHOP_SOURCE_DIRECTORY);
     }
@@ -212,9 +204,8 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      * Copy files from source to installation by filter.
      *
      * @param string $packagePath
-     * @param string $filter
      */
-    private function copyFilesFromSourceToInstallationByFilter($packagePath, $filter)
+    private function copyFilesFromSourceToInstallationByFilter($packagePath, string $filter): void
     {
         $sourceDirectory    = $this->getPackageDirectoryOfShopSource($packagePath);
         $filteredFiles      = $this->getFilteredFiles($sourceDirectory, $filter);
@@ -235,7 +226,7 @@ class ShopPackageInstaller extends AbstractPackageInstaller
      * @param string $sourcePath
      * @param string $destinationPath
      */
-    private function copyFileIfIsMissing($sourcePath, $destinationPath)
+    private function copyFileIfIsMissing($sourcePath, $destinationPath): void
     {
         if (!file_exists($destinationPath)) {
             CopyGlobFilteredFileManager::copy(
@@ -248,12 +239,10 @@ class ShopPackageInstaller extends AbstractPackageInstaller
     /**
      * Return filtered files.
      *
-     * @param   string $directory
      * @param   string $filter
-     *
      * @return  GlobIterator
      */
-    private function getFilteredFiles($directory, $filter)
+    private function getFilteredFiles(string $directory, $filter)
     {
         return new GlobIterator(Path::join($directory, $filter));
     }
@@ -261,15 +250,12 @@ class ShopPackageInstaller extends AbstractPackageInstaller
     /**
      * Return absolute path to file from installation.
      *
-     * @param   string  $sourcePackageDirectory
-     * @param   string  $absolutePathToFileFromPackage
      *
-     * @return  string
      */
     private function getAbsoluteFilePathFromInstallation(
-        $sourcePackageDirectory,
-        $absolutePathToFileFromPackage
-    ) {
+        string $sourcePackageDirectory,
+        string $absolutePathToFileFromPackage
+    ): string {
         $installationDirectoryOfShopSource = $this->getTargetDirectoryOfShopSource();
 
         $relativePathOfSourceFromPackage = Path::makeRelative(
@@ -283,9 +269,6 @@ class ShopPackageInstaller extends AbstractPackageInstaller
         );
     }
 
-    /**
-     * @return string
-     */
     private function getPackageTypeDescription(): string
     {
         return 'OXID eShop package';

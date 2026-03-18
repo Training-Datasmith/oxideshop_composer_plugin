@@ -39,15 +39,10 @@ abstract class AbstractPackageInstaller
         . DIRECTORY_SEPARATOR
         . self::BLACKLIST_ALL_FILES;
 
-    private PackageUpdatePreferenceChecker $packageUpdatePreferenceChecker;
+    private readonly PackageUpdatePreferenceChecker $packageUpdatePreferenceChecker;
 
     /**
      * AbstractInstaller constructor.
-     *
-     * @param IOInterface      $io
-     * @param string           $rootDirectory
-     * @param PackageInterface $package
-     * @param array            $settings
      */
     public function __construct(
         private readonly IOInterface $io,
@@ -72,9 +67,6 @@ abstract class AbstractPackageInstaller
      */
     abstract public function update($packagePath);
 
-    /**
-     * @param string $packagePath
-     */
     abstract public function uninstall(string $packagePath): void;
 
     /**
@@ -156,8 +148,6 @@ abstract class AbstractPackageInstaller
     }
 
     /**
-     * @param string $messageToAsk
-     * @param string $packagePath
      *
      * @return bool
      */
@@ -169,7 +159,6 @@ abstract class AbstractPackageInstaller
     /**
      * Check whether given package is already installed.
      *
-     * @param string $packagePath
      *
      * @return bool
      */
@@ -191,10 +180,9 @@ abstract class AbstractPackageInstaller
 
         if (!is_null($preferenceValue)) {
             return $preferenceValue;
-        } else {
-            $userInput = $this->getIO()->ask($messageToAsk, 'N');
-            return $this->isPositiveUserInput($userInput);
         }
+        $userInput = $this->getIO()->ask($messageToAsk, 'N');
+        return $this->isPositiveUserInput($userInput);
     }
 
     /**
@@ -209,55 +197,34 @@ abstract class AbstractPackageInstaller
      * Return true if the input from user is a positive answer (Yes/yes/Y/y)
      *
      * @param string $userInput Raw user input
-     *
-     * @return bool
      */
-    private function isPositiveUserInput($userInput)
+    private function isPositiveUserInput($userInput): bool
     {
         $positiveAnswers = ['yes', 'y'];
 
         return in_array(strtolower(trim($userInput)), $positiveAnswers, true);
     }
 
-    /**
-     * @param string $packageType
-     */
     protected function writeInstallingMessage(string $packageType)
     {
         $this->getIO()->write($this->getInstallingMessage($packageType));
     }
 
-    /**
-     * @param string $packageType
-     *
-     * @return string
-     */
     protected function getInstallingMessage(string $packageType): string
     {
         return $this->getMessagePrefix() . "Installing {$packageType} {$this->getPackage()->getName()}";
     }
 
-    /**
-     * @return string
-     */
     protected function getMessagePrefix(): string
     {
         return '<info>oxid-esales/oxideshop-composer-plugin:</info> ';
     }
 
-    /**
-     * @param string $packageType
-     */
     protected function writeUpdatingMessage(string $packageType)
     {
         $this->getIO()->write($this->getUpdatingMessage($packageType));
     }
 
-    /**
-     * @param string $packageType
-     *
-     * @return string
-     */
     protected function getUpdatingMessage(string $packageType): string
     {
         $packageName = $this->highlightMessage($this->getPackage()->getName());
@@ -272,9 +239,6 @@ abstract class AbstractPackageInstaller
         return $this->getIO()->write($this->getCopyingMessage());
     }
 
-    /**
-     * @return string
-     */
     protected function getCopyingMessage(): string
     {
         return 'Copying files ...';
@@ -288,9 +252,6 @@ abstract class AbstractPackageInstaller
         return $this->getIO()->write($this->getDoneMessage());
     }
 
-    /**
-     * @return string
-     */
     protected function getDoneMessage(): string
     {
         return 'Done';
@@ -304,15 +265,12 @@ abstract class AbstractPackageInstaller
         return $this->getIO()->write($this->getSkippedMessage());
     }
 
-    /**
-     * @return string
-     */
     protected function getSkippedMessage(): string
     {
         return 'Skipped';
     }
 
-    protected function highlightMessage($message): string
+    protected function highlightMessage(string $message): string
     {
         return '<options=bold>' . $message . '</>';
     }

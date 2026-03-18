@@ -30,10 +30,8 @@ class CopyGlobFilteredFileManager
      *
      * @throws \InvalidArgumentException If given $sourcePath is not a string.
      * @throws \InvalidArgumentException If given $destinationPath is not a string.
-     *
-     * @return null
      */
-    public static function copy($sourcePath, $destinationPath, $globExpressionList = [])
+    public static function copy($sourcePath, $destinationPath, $globExpressionList = []): void
     {
         if (!is_string($sourcePath)) {
             $message = "Given value \"$sourcePath\" is not a valid source path entry. " .
@@ -64,10 +62,8 @@ class CopyGlobFilteredFileManager
      * Returns relative path from an absolute path to a file.
      *
      * @param string $sourcePath Absolute path to a file.
-     *
-     * @return string
      */
-    private static function getRelativePathForSingleFile($sourcePath)
+    private static function getRelativePathForSingleFile(string $sourcePath): string
     {
         return Path::makeRelative($sourcePath, Path::getDirectory($sourcePath));
     }
@@ -101,12 +97,11 @@ class CopyGlobFilteredFileManager
      *
      * @return \Iterator
      */
-    private static function getFlatFileListIterator($sourcePath)
+    private static function getFlatFileListIterator($sourcePath): \RecursiveIteratorIterator
     {
         $recursiveFileIterator = new \RecursiveDirectoryIterator($sourcePath, \FilesystemIterator::SKIP_DOTS);
-        $flatFileListIterator = new \RecursiveIteratorIterator($recursiveFileIterator);
 
-        return $flatFileListIterator;
+        return new \RecursiveIteratorIterator($recursiveFileIterator);
     }
 
     /**
@@ -116,7 +111,7 @@ class CopyGlobFilteredFileManager
      * @param string $destinationPath    Absolute path to directory.
      * @param array  $globExpressionList List of glob expressions, e.g. ["*.txt", "*.pdf"].
      */
-    private static function copyDirectory($sourcePath, $destinationPath, $globExpressionList)
+    private static function copyDirectory(string $sourcePath, string $destinationPath, $globExpressionList): void
     {
         $filesystem = new Filesystem();
 
@@ -137,7 +132,7 @@ class CopyGlobFilteredFileManager
      * @param string $destinationPath    Absolute path to directory.
      * @param array  $globExpressionList List of glob expressions, e.g. ["*.txt", "*.pdf"].
      */
-    private static function copyFile($sourcePathOfFile, $destinationPath, $globExpressionList)
+    private static function copyFile(string $sourcePathOfFile, string $destinationPath, $globExpressionList): void
     {
         $filesystem = new Filesystem();
 
