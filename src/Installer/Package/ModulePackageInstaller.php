@@ -4,86 +4,74 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Composer_Plugin\Installer\Package;
 
-declare(strict_types=1);
-
-namespace OxidEsales\ComposerPlugin\Installer\Package;
-
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-
+use Oxid_Esales\Eshop_Community\Core\Di\Container_Facade;
+use Oxid_Esales\Eshop_Community\Internal\Container\Bootstrap_Container_Factory;
+use Oxid_Esales\Eshop_Community\Internal\Framework\Module\Install\Data_Object\Oxid_Eshop_Package;
+use Oxid_Esales\Eshop_Community\Internal\Framework\Module\Install\Service\Module_Installer_Interface;
 /**
  * @inheritdoc
  */
-class ModulePackageInstaller extends AbstractPackageInstaller
+class Module_Package_Installer extends Abstract_Package_Installer
 {
     /**
      * @return bool
      */
-    public function isInstalled(string $packagePath)
+    public function is_installed(string $package_path)
     {
-        return $this->getBootstrapModuleInstaller()->isInstalled($this->getOxidShopPackage($packagePath));
+        return $this->get_bootstrap_module_installer()->is_installed($this->get_oxid_shop_package($package_path));
     }
-
     /**
      * Copies module files to shop directory.
      *
      * @param string $packagePath
      */
-    public function install($packagePath): void
+    public function install($package_path): void
     {
-        $this->getIO()->write("Installing module {$this->getPackageName()} package.");
-        $this->getBootstrapModuleInstaller()->install($this->getOxidShopPackage($packagePath));
+        $this->get_io()->write("Installing module {$this->get_package_name()} package.");
+        $this->get_bootstrap_module_installer()->install($this->get_oxid_shop_package($package_path));
     }
-
-    public function uninstall(string $packagePath): void
+    public function uninstall(string $package_path): void
     {
-        $moduleInstaller = $this->getModuleInstaller();
-        $moduleInstaller->uninstall($this->getOxidShopPackage($packagePath));
+        $module_installer = $this->get_module_installer();
+        $module_installer->uninstall($this->get_oxid_shop_package($package_path));
     }
-
     /**
      * @param string $packagePath
      */
-    public function update($packagePath): void
+    public function update($package_path): void
     {
-        $package = $this->getOxidShopPackage($packagePath);
-
-        if ($this->getBootstrapModuleInstaller()->isInstalled($package)) {
-            $this->getIO()->write("Updating module {$this->getPackageName()} files...");
-            $this->getBootstrapModuleInstaller()->install($package);
+        $package = $this->get_oxid_shop_package($package_path);
+        if ($this->get_bootstrap_module_installer()->is_installed($package)) {
+            $this->get_io()->write("Updating module {$this->get_package_name()} files...");
+            $this->get_bootstrap_module_installer()->install($package);
         } else {
-            $this->install($packagePath);
+            $this->install($package_path);
         }
     }
-
-    private function getModuleInstaller(): ModuleInstallerInterface
+    private function get_module_installer(): Module_Installer_Interface
     {
         try {
-            return ContainerFacade::get(ModuleInstallerInterface::class);
+            return Container_Facade::get(Module_Installer_Interface::class);
         } catch (\Exception) {
-            return $this->getBootstrapModuleInstaller();
+            return $this->get_bootstrap_module_installer();
         }
     }
-
-    private function getOxidShopPackage(string $packagePath): OxidEshopPackage
+    private function get_oxid_shop_package(string $package_path): Oxid_Eshop_Package
     {
-        return new OxidEshopPackage($packagePath);
+        return new Oxid_Eshop_Package($package_path);
     }
-
-    private function getBootstrapModuleInstaller(): ModuleInstallerInterface
+    private function get_bootstrap_module_installer(): Module_Installer_Interface
     {
-        return BootstrapContainerFactory::getBootstrapContainer()
-            ->get('oxid_esales.module.install.service.bootstrap_module_installer');
+        return Bootstrap_Container_Factory::get_bootstrap_container()->get('oxid_esales.module.install.service.bootstrap_module_installer');
     }
-
     /**
      * returns module's installation target direcory
      */
-    protected function getModuleTargetDir(): string
+    protected function get_module_target_dir(): string
     {
-        return $this->getPackage()->getExtra()['oxideshop']['target-directory'] ?? '';
+        return $this->get_package()->get_extra()['oxideshop']['target-directory'] ?? '';
     }
 }

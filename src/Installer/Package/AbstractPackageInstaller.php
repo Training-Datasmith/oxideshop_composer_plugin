@@ -4,97 +4,71 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Composer_Plugin\Installer\Package;
 
-declare(strict_types=1);
-
-namespace OxidEsales\ComposerPlugin\Installer\Package;
-
-use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
-use OxidEsales\ComposerPlugin\Utilities\PackageUpdatePreferenceChecker;
-
+use Composer\IO\Io_Interface;
+use Composer\Package\Package_Interface;
+use Oxid_Esales\Composer_Plugin\Utilities\Package_Update_Preference_Checker;
 /**
  * Class is responsible for preparing project structure.
  * It copies necessary files to specific directories.
  */
-abstract class AbstractPackageInstaller
+abstract class Abstract_Package_Installer
 {
     public const EXTRA_PARAMETER_KEY_ROOT = 'oxideshop';
-
     public const EXTRA_PARAMETER_KEY_TARGET = 'target-directory';
-
     public const EXTRA_PARAMETER_KEY_ASSETS = 'assets-directory';
-
     public const EXTRA_PARAMETER_SOURCE_PATH = 'source-path';
-
     public const EXTRA_PARAMETER_FILTER_BLACKLIST = 'blacklist-filter';
-
     public const BLACKLIST_ALL_FILES = '**/*';
-
     public const BLACKLIST_VCS_DIRECTORY = '.git';
-
     public const BLACKLIST_VCS_IGNORE_FILE = '.gitignore';
-
-    public const BLACKLIST_VCS_DIRECTORY_FILTER = self::BLACKLIST_VCS_DIRECTORY
-        . DIRECTORY_SEPARATOR
-        . self::BLACKLIST_ALL_FILES;
-
-    private readonly PackageUpdatePreferenceChecker $packageUpdatePreferenceChecker;
-
+    public const BLACKLIST_VCS_DIRECTORY_FILTER = self::BLACKLIST_VCS_DIRECTORY . DIRECTORY_SEPARATOR . self::BLACKLIST_ALL_FILES;
+    private readonly Package_Update_Preference_Checker $package_update_preference_checker;
     /**
      * AbstractInstaller constructor.
      */
-    public function __construct(
-        private readonly IOInterface $io,
-        private readonly string $rootDirectory,
-        private readonly PackageInterface $package,
-        array $settings = [],
-    ) {
-        $this->packageUpdatePreferenceChecker = new PackageUpdatePreferenceChecker($settings);
+    public function __construct(private readonly Io_Interface $io, private readonly string $root_directory, private readonly Package_Interface $package, array $settings = [])
+    {
+        $this->package_update_preference_checker = new Package_Update_Preference_Checker($settings);
     }
-
     /**
      * Run package installation procedure. After installation files should be moved to correct location.
      *
      * @param string $packagePath Path to downloaded package in vendors directory.
      */
-    abstract public function install($packagePath);
-
+    abstract public function install($package_path);
     /**
      * Run update procedure to keep package files up to date.
      *
      * @param string $packagePath Path to downloaded package in vendors directory.
      */
-    abstract public function update($packagePath);
-
-    abstract public function uninstall(string $packagePath): void;
-
+    abstract public function update($package_path);
+    abstract public function uninstall(string $package_path): void;
     /**
      * @return string
      */
-    protected function getRootDirectory()
+    protected function get_root_directory()
     {
-        return $this->rootDirectory;
+        return $this->root_directory;
     }
-
     /**
      * @return string
      */
-    protected function getPackageName()
+    protected function get_package_name()
     {
-        return $this->getPackage()->getName();
+        return $this->get_package()->get_name();
     }
-
     /**
      * Return the value defined in composer extra parameters for blacklist filtering.
      *
      * @return array
      */
-    protected function getBlacklistFilterValue()
+    protected function get_blacklist_filter_value()
     {
-        return $this->getExtraParameterValueByKey(static::EXTRA_PARAMETER_FILTER_BLACKLIST, []);
+        return $this->get_extra_parameter_value_by_key(static::EXTRA_PARAMETER_FILTER_BLACKLIST, []);
     }
-
     /**
      * Search for parameter with specific key in "extra" composer configuration block
      *
@@ -103,33 +77,28 @@ abstract class AbstractPackageInstaller
      *
      * @return array|string|null
      */
-    protected function getExtraParameterValueByKey($extraParameterKey, $defaultValue = null)
+    protected function get_extra_parameter_value_by_key($extra_parameter_key, $default_value = null)
     {
-        $extraParameters = $this->getPackage()->getExtra();
-
-        $extraParameterValue = $extraParameters[static::EXTRA_PARAMETER_KEY_ROOT][$extraParameterKey] ?? null;
-
-        return (!empty($extraParameterValue)) ? $extraParameterValue : $defaultValue;
+        $extra_parameters = $this->get_package()->get_extra();
+        $extra_parameter_value = $extra_parameters[static::EXTRA_PARAMETER_KEY_ROOT][$extra_parameter_key] ?? null;
+        return !empty($extra_parameter_value) ? $extra_parameter_value : $default_value;
     }
-
     /**
      * @return PackageInterface
      */
-    public function getPackage()
+    public function get_package()
     {
         return $this->package;
     }
-
     /**
      * Get VCS glob filter expression
      *
      * @return array
      */
-    protected function getVCSFilter()
+    protected function get_vcs_filter()
     {
         return [self::BLACKLIST_VCS_DIRECTORY_FILTER, self::BLACKLIST_VCS_IGNORE_FILE];
     }
-
     /**
      * Combine multiple glob expression lists into one list
      *
@@ -137,36 +106,32 @@ abstract class AbstractPackageInstaller
      *
      * @return array
      */
-    protected function getCombinedFilters($listOfGlobExpressionLists)
+    protected function get_combined_filters($list_of_glob_expression_lists)
     {
         $filters = [];
-        foreach ($listOfGlobExpressionLists as $filter) {
+        foreach ($list_of_glob_expression_lists as $filter) {
             $filters = array_merge($filters, $filter);
         }
-
         return $filters;
     }
-
     /**
      *
      * @return bool
      */
-    protected function askQuestionIfNotInstalled(string $messageToAsk, string $packagePath)
+    protected function ask_question_if_not_installed(string $message_to_ask, string $package_path)
     {
-        return $this->isInstalled($packagePath) ? $this->askQuestion($messageToAsk) : true;
+        return $this->is_installed($package_path) ? $this->ask_question($message_to_ask) : true;
     }
-
     /**
      * Check whether given package is already installed.
      *
      *
      * @return bool
      */
-    public function isInstalled(string $packagePath)
+    public function is_installed(string $package_path)
     {
         return false;
     }
-
     /**
      * Returns true if the human answer to the given question was answered with a positive value (Yes/yes/Y/y).
      *
@@ -174,103 +139,87 @@ abstract class AbstractPackageInstaller
      *
      * @return bool
      */
-    protected function askQuestion($messageToAsk)
+    protected function ask_question($message_to_ask)
     {
-        $preferenceValue = $this->packageUpdatePreferenceChecker->getUpdatePreferenceValue($this->getPackageName());
-
-        if (!is_null($preferenceValue)) {
-            return $preferenceValue;
+        $preference_value = $this->package_update_preference_checker->get_update_preference_value($this->get_package_name());
+        if (!is_null($preference_value)) {
+            return $preference_value;
         }
-        $userInput = $this->getIO()->ask($messageToAsk, 'N');
-        return $this->isPositiveUserInput($userInput);
+        $user_input = $this->get_io()->ask($message_to_ask, 'N');
+        return $this->is_positive_user_input($user_input);
     }
-
     /**
      * @return IOInterface
      */
-    protected function getIO()
+    protected function get_io()
     {
         return $this->io;
     }
-
     /**
      * Return true if the input from user is a positive answer (Yes/yes/Y/y)
      *
      * @param string $userInput Raw user input
      */
-    private function isPositiveUserInput($userInput): bool
+    private function is_positive_user_input($user_input): bool
     {
-        $positiveAnswers = ['yes', 'y'];
-
-        return in_array(strtolower(trim($userInput)), $positiveAnswers, true);
+        $positive_answers = ['yes', 'y'];
+        return in_array(strtolower(trim($user_input)), $positive_answers, true);
     }
-
-    protected function writeInstallingMessage(string $packageType)
+    protected function write_installing_message(string $package_type)
     {
-        $this->getIO()->write($this->getInstallingMessage($packageType));
+        $this->get_io()->write($this->get_installing_message($package_type));
     }
-
-    protected function getInstallingMessage(string $packageType): string
+    protected function get_installing_message(string $package_type): string
     {
-        return $this->getMessagePrefix() . "Installing {$packageType} {$this->getPackage()->getName()}";
+        return $this->get_message_prefix() . "Installing {$package_type} {$this->get_package()->get_name()}";
     }
-
-    protected function getMessagePrefix(): string
+    protected function get_message_prefix(): string
     {
         return '<info>oxid-esales/oxideshop-composer-plugin:</info> ';
     }
-
-    protected function writeUpdatingMessage(string $packageType)
+    protected function write_updating_message(string $package_type)
     {
-        $this->getIO()->write($this->getUpdatingMessage($packageType));
+        $this->get_io()->write($this->get_updating_message($package_type));
     }
-
-    protected function getUpdatingMessage(string $packageType): string
+    protected function get_updating_message(string $package_type): string
     {
-        $packageName = $this->highlightMessage($this->getPackage()->getName());
-        return $this->getMessagePrefix() . "Updating {$packageType} {$packageName}";
+        $package_name = $this->highlight_message($this->get_package()->get_name());
+        return $this->get_message_prefix() . "Updating {$package_type} {$package_name}";
     }
-
     /**
      * @return mixed
      */
-    protected function writeCopyingMessage()
+    protected function write_copying_message()
     {
-        return $this->getIO()->write($this->getCopyingMessage());
+        return $this->get_io()->write($this->get_copying_message());
     }
-
-    protected function getCopyingMessage(): string
+    protected function get_copying_message(): string
     {
         return 'Copying files ...';
     }
-
     /**
      * @return mixed
      */
-    protected function writeDoneMessage()
+    protected function write_done_message()
     {
-        return $this->getIO()->write($this->getDoneMessage());
+        return $this->get_io()->write($this->get_done_message());
     }
-
-    protected function getDoneMessage(): string
+    protected function get_done_message(): string
     {
         return 'Done';
     }
-
     /**
      * @return mixed
      */
-    protected function writeSkippedMessage()
+    protected function write_skipped_message()
     {
-        return $this->getIO()->write($this->getSkippedMessage());
+        return $this->get_io()->write($this->get_skipped_message());
     }
-
-    protected function getSkippedMessage(): string
+    protected function get_skipped_message(): string
     {
         return 'Skipped';
     }
-
-    protected function highlightMessage(string $message): string
+    protected function highlight_message(string $message): string
     {
         return '<options=bold>' . $message . '</>';
     }

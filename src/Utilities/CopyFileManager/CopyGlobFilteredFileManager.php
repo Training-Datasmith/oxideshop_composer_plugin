@@ -4,22 +4,19 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Composer_Plugin\Utilities\Copy_File_Manager;
 
-declare(strict_types=1);
-
-namespace OxidEsales\ComposerPlugin\Utilities\CopyFileManager;
-
-use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\GlobMatcher;
-use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\Iteration\BlacklistFilterIterator;
+use Oxid_Esales\Composer_Plugin\Utilities\Copy_File_Manager\Glob_Matcher\Glob_Matcher;
+use Oxid_Esales\Composer_Plugin\Utilities\Copy_File_Manager\Glob_Matcher\Iteration\Blacklist_Filter_Iterator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
-
 /**
  * Class CopyGlobFilteredFileManager.
  *
  * Copies files/directories from source to destination which matches the criteria described in a glob filter.
  */
-class CopyGlobFilteredFileManager
+class Copy_Glob_Filtered_File_Manager
 {
     /**
      * Copy files/directories from source to destination.
@@ -31,43 +28,34 @@ class CopyGlobFilteredFileManager
      * @throws \InvalidArgumentException If given $sourcePath is not a string.
      * @throws \InvalidArgumentException If given $destinationPath is not a string.
      */
-    public static function copy($sourcePath, $destinationPath, $globExpressionList = []): void
+    public static function copy($source_path, $destination_path, $glob_expression_list = []): void
     {
-        if (!is_string($sourcePath)) {
-            $message = "Given value \"$sourcePath\" is not a valid source path entry. " .
-                'Valid entry must be an absolute path to an existing file or directory.';
-
+        if (!is_string($source_path)) {
+            $message = "Given value \"{$source_path}\" is not a valid source path entry. " . 'Valid entry must be an absolute path to an existing file or directory.';
             throw new \InvalidArgumentException($message);
         }
-
-        if (!is_string($destinationPath)) {
-            $message = "Given value \"$destinationPath\" is not a valid destination path entry. " .
-                'Valid entry must be an absolute path to an existing directory.';
-
+        if (!is_string($destination_path)) {
+            $message = "Given value \"{$destination_path}\" is not a valid destination path entry. " . 'Valid entry must be an absolute path to an existing directory.';
             throw new \InvalidArgumentException($message);
         }
-
-        if (!file_exists($sourcePath)) {
+        if (!file_exists($source_path)) {
             return;
         }
-
-        if (is_dir($sourcePath)) {
-            self::copyDirectory($sourcePath, $destinationPath, $globExpressionList);
+        if (is_dir($source_path)) {
+            self::copy_directory($source_path, $destination_path, $glob_expression_list);
         } else {
-            self::copyFile($sourcePath, $destinationPath, $globExpressionList);
+            self::copy_file($source_path, $destination_path, $glob_expression_list);
         }
     }
-
     /**
      * Returns relative path from an absolute path to a file.
      *
      * @param string $sourcePath Absolute path to a file.
      */
-    private static function getRelativePathForSingleFile(string $sourcePath): string
+    private static function get_relative_path_for_single_file(string $source_path): string
     {
-        return Path::makeRelative($sourcePath, Path::getDirectory($sourcePath));
+        return Path::make_relative($source_path, Path::get_directory($source_path));
     }
-
     /**
      * Return an iterator which iterates through a given directory tree in a one-dimensional fashion.
      *
@@ -97,13 +85,11 @@ class CopyGlobFilteredFileManager
      *
      * @return \Iterator
      */
-    private static function getFlatFileListIterator($sourcePath): \RecursiveIteratorIterator
+    private static function get_flat_file_list_iterator($source_path): \Recursive_Iterator_Iterator
     {
-        $recursiveFileIterator = new \RecursiveDirectoryIterator($sourcePath, \FilesystemIterator::SKIP_DOTS);
-
-        return new \RecursiveIteratorIterator($recursiveFileIterator);
+        $recursive_file_iterator = new \Recursive_Directory_Iterator($source_path, \Filesystem_Iterator::SKIP_DOTS);
+        return new \Recursive_Iterator_Iterator($recursive_file_iterator);
     }
-
     /**
      * Copy whole directory using given glob filters.
      *
@@ -111,20 +97,13 @@ class CopyGlobFilteredFileManager
      * @param string $destinationPath    Absolute path to directory.
      * @param array  $globExpressionList List of glob expressions, e.g. ["*.txt", "*.pdf"].
      */
-    private static function copyDirectory(string $sourcePath, string $destinationPath, $globExpressionList): void
+    private static function copy_directory(string $source_path, string $destination_path, $glob_expression_list): void
     {
         $filesystem = new Filesystem();
-
-        $flatFileListIterator = self::getFlatFileListIterator($sourcePath);
-        $filteredFileListIterator = new BlacklistFilterIterator(
-            $flatFileListIterator,
-            $sourcePath,
-            $globExpressionList
-        );
-
-        $filesystem->mirror($sourcePath, $destinationPath, $filteredFileListIterator, ['override' => true]);
+        $flat_file_list_iterator = self::get_flat_file_list_iterator($source_path);
+        $filtered_file_list_iterator = new Blacklist_Filter_Iterator($flat_file_list_iterator, $source_path, $glob_expression_list);
+        $filesystem->mirror($source_path, $destination_path, $filtered_file_list_iterator, ['override' => true]);
     }
-
     /**
      * Copy file using given glob filters.
      *
@@ -132,14 +111,12 @@ class CopyGlobFilteredFileManager
      * @param string $destinationPath    Absolute path to directory.
      * @param array  $globExpressionList List of glob expressions, e.g. ["*.txt", "*.pdf"].
      */
-    private static function copyFile(string $sourcePathOfFile, string $destinationPath, $globExpressionList): void
+    private static function copy_file(string $source_path_of_file, string $destination_path, $glob_expression_list): void
     {
         $filesystem = new Filesystem();
-
-        $relativeSourcePath = self::getRelativePathForSingleFile($sourcePathOfFile);
-
-        if (!GlobMatcher::matchAny($relativeSourcePath, $globExpressionList)) {
-            $filesystem->copy($sourcePathOfFile, $destinationPath, true);
+        $relative_source_path = self::get_relative_path_for_single_file($source_path_of_file);
+        if (!Glob_Matcher::match_any($relative_source_path, $glob_expression_list)) {
+            $filesystem->copy($source_path_of_file, $destination_path, true);
         }
     }
 }

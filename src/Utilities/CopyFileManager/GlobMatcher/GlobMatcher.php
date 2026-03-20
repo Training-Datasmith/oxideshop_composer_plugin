@@ -4,18 +4,15 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Composer_Plugin\Utilities\Copy_File_Manager\Glob_Matcher;
 
-declare(strict_types=1);
-
-namespace OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher;
-
-use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\GlobListMatcher\GlobListMatcher;
-use OxidEsales\ComposerPlugin\Utilities\CopyFileManager\GlobMatcher\Integration\WebmozartGlobMatcher;
-
+use Oxid_Esales\Composer_Plugin\Utilities\Copy_File_Manager\Glob_Matcher\Glob_List_Matcher\Glob_List_Matcher;
+use Oxid_Esales\Composer_Plugin\Utilities\Copy_File_Manager\Glob_Matcher\Integration\Webmozart_Glob_Matcher;
 /**
  * Expose multiple glob matching interface for given relative path.
  */
-class GlobMatcher
+class Glob_Matcher
 {
     /**
      * @param string $relativePath       Relative path to match against.
@@ -23,9 +20,8 @@ class GlobMatcher
      *
      * @return bool True if given path matches any of given glob expression.
      */
-    public static function matchAny($relativePath, $globExpressionList)
+    public static function match_any($relative_path, $glob_expression_list)
     {
-        return (new GlobListMatcher(new WebmozartGlobMatcher()))
-            ->matchAny($relativePath, $globExpressionList);
+        return (new Glob_List_Matcher(new Webmozart_Glob_Matcher()))->match_any($relative_path, $glob_expression_list);
     }
 }
