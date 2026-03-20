@@ -25,12 +25,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "OxidEsales\\ComposerPlugin\\": "src"
+            "Oxid_Esales\\Composer_Plugin\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\ComposerPlugin\\Tests\\": "tests/"
+            "Oxid_Esales\\Composer_Plugin\\Tests\\": "tests/"
         }
     },
     "extra": {
